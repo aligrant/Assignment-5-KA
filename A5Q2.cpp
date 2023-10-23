@@ -38,11 +38,12 @@ float getQuadPeri(float side1, float side2, float side3, float side4)
 //Gets Area of a Quadrilateral
 float getQuadArea(float side1, float side2, float diagonal, float side3, float side4) // must use getTriArea
 {
-  float getTriArea(side1,side2);
-  float QuadArea = 
+  float triArea = getTriArea(side1, side2, side3);
+  float QuadArea;
 }
 float getTotalCost(float area, float peri, float fence) // finds total cost, area and perimeter are just starting variables, will declare in base code
 {
+	float f_or_no;
   float pave_cost = area * 19.50;
   float fence_cost = peri * 27;
   if (fence == 1) // whether fence is there or not, costs 150, shoudlve probably used boolean but I hate those
@@ -54,16 +55,16 @@ float getTotalCost(float area, float peri, float fence) // finds total cost, are
       f_or_no = 0;
         }
   float admin_cost = 45;
-  float sub_total = admin_cost + f_or_no + pave_cost + fence_cost
-  float total_tax = sub_total *0.13
-  float grand_total = sub_total + total_tax
+  float sub_total = admin_cost + f_or_no + pave_cost + fence_cost;
+  float total_tax = sub_total*0.13;
+  float grand_total = sub_total + total_tax;
 }
 
 using namespace std;
 
 int main()
 {
-  ifstream FileIn("Sep_jobs2023.txt")
+  ifstream FileIn("Sep_jobs2023.txt");
   if (!FileIn)
 {
   cout << "Unable to open file.\n";

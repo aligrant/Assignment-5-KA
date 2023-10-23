@@ -32,4 +32,10 @@ Write a program that:
 ? Outputs to the file the shortest time, in minutes, between rabbits
 ? Closes the files
 */
+  ifstream FileIn("wascally_wabbits.txt");
+  if (!FileIn)
+{
+  cout << "Unable to open file.\n";
+  return EXIT_FAILURE;
+}
 
