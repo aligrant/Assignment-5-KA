@@ -14,27 +14,34 @@ by the work crew for the month of September. Each line of the file contains the 
 #include <fstream>
 #include <cmath>
 #include <iomanip>
-int getTriPeri(int side1, int side2, int side3)
+//perim tri A function that receives three side lengths of a triangle and returns the perimeter.
+float getTriPeri(float side1, float side2, float side3)
 { 
-  int tri_peri = side1 + side2 + side3;
-  return;
+  float tri_peri = side1 + side2 + side3;
+  return tri_peri;
 }
-float getTriArea(int side1, int side2, int side3, int peri)
+// AreA TRI Function that recieves 3 side lengths and returns area
+float getTriArea(float side1, float side2, float side3)
 {
-  s_peri = peri/2;
-  float tri_area = sqrt((s_peri*(s_peri-side1)) * (s_peri-side2) * (s_peri - side3));
-  return;
+  //Added this float and removed parameter peri
+  float peri=getTriPeri(side1,side2,side3);
+  float s_peri = peri/2;
+  float tri_area = sqrt((s_peri*(s_peri-side1))*(s_peri-side2)*(s_peri - side3));
+  return tri_area;
 }
-float getQuadPeri(int side1, int side2, int side3, int side4) 
+//Gets perimeter of a quadrilateral
+float getQuadPeri(float side1, float side2, float side3, float side4) 
 {
   float quad_peri = side1 + side2 + side3 + side4;
-  return;
+  return quad_peri;
 }
-float getQuadArea(int side1, int side2) // must use getTriArea
+//Gets Area of a Quadrilateral
+float getQuadArea(float side1, float side2, float diagonal, float side3, float side4) // must use getTriArea
 {
+  float getTriArea(side1,side2);
   float QuadArea = 
 }
-float getTotalCost(float area, int peri, int fence) // finds total cost, area and perimeter are just starting variables, will declare in base code
+float getTotalCost(float area, float peri, float fence) // finds total cost, area and perimeter are just starting variables, will declare in base code
 {
   float pave_cost = area * 19.50;
   float fence_cost = peri * 27;
@@ -46,7 +53,7 @@ float getTotalCost(float area, int peri, int fence) // finds total cost, area an
     { 
       f_or_no = 0;
         }
-  int admin_cost = 45;
+  float admin_cost = 45;
   float sub_total = admin_cost + f_or_no + pave_cost + fence_cost
   float total_tax = sub_total *0.13
   float grand_total = sub_total + total_tax
@@ -65,7 +72,7 @@ int main()
 int job_no = 1;
 int fence_y_n = 0;
 string q_or_tri = "";
-int 
+ 
 while (find out how many jobs // loop it so it reads until there are no other jobs to complete
  FileIn >> job_no >> fence_y_n >> q_or_tri
   if (q_or_tri == "tri")
