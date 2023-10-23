@@ -25,7 +25,7 @@ float getTriArea(int side1, int side2, int side3, int peri)
   float tri_area = sqrt((s_peri*(s_peri-side1)) * (s_peri-side2) * (s_peri - side3));
   return;
 }
-float getQuadPeri(int side1, int side2, int side3, int side4)
+float getQuadPeri(int side1, int side2, int side3, int side4) 
 {
   float quad_peri = side1 + side2 + side3 + side4;
   return;
@@ -34,6 +34,25 @@ float getQuadArea(int side1, int side2) // must use getTriArea
 {
   float QuadArea = 
 }
+float getTotalCost(float area, int peri, int fence) // finds total cost, area and perimeter are just starting variables, will declare in base code
+{
+  float pave_cost = area * 19.50;
+  float fence_cost = peri * 27;
+  if (fence == 1) // whether fence is there or not, costs 150, shoudlve probably used boolean but I hate those
+    {
+      f_or_no = 150;
+        }
+  else
+    { 
+      f_or_no = 0;
+        }
+  int admin_cost = 45;
+  float sub_total = admin_cost + f_or_no + pave_cost + fence_cost
+  float total_tax = sub_total *0.13
+  float grand_total = sub_total + total_tax
+
+  
+
 using namespace std;
 
 int main()
