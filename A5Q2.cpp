@@ -50,8 +50,7 @@ float getTotalCost(float area, int peri, int fence) // finds total cost, area an
   float sub_total = admin_cost + f_or_no + pave_cost + fence_cost
   float total_tax = sub_total *0.13
   float grand_total = sub_total + total_tax
-
-  
+}
 
 using namespace std;
 
@@ -62,6 +61,28 @@ int main()
 {
   cout << "Unable to open file.\n";
   return EXIT_FAILURE;
+}
+int job_no = 1;
+int fence_y_n = 0;
+string q_or_tri = "";
+int 
+while (find out how many jobs // loop it so it reads until there are no other jobs to complete
+ FileIn >> job_no >> fence_y_n >> q_or_tri
+  if (q_or_tri == "tri")
+    {
+      int side1 = side2 = side3 = 0;
+      FileIn >> job_no >> fence_y_n >> q_or_tri >> side1 >> side2 >> side3;
+      getTriPeri(side1, side2, side3);
+      getTriArea(side1, side2, side3);
+      area = getTriArea(side1, side2, side3);
+      peri =  getTriPeri(side1, side2, side3);
+      int fence = fence_y_n;
+      getTotalCost(area, peri, fence);
+    }
+  else 
+    {
+        
+  return EXIT_SUCCESS;
 }
 
 
