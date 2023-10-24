@@ -1,19 +1,14 @@
 /*
-A landscaping company has a crew of co-op students who do both paving and (sometimes) fencing. The company
-charges $ 19.50 for paving each square metre, or any part of a square metre, (i.e. 2.1 becomes 3 sq. m) and $27.00 per
-metre, or any part of a metre, for fencing. (Hint: There is a C++ function called ceil that rounds towards +8.) All fences
-also have a $150.00 gate. Added to each bill is a $45.00 administration fee. HST is 13%.
-The sales representative for the company has created a file called “Sep_jobs2023.txt” that contains the jobs completed
-by the work crew for the month of September. Each line of the file contains the following information:
-? Job number
-? Fencing Job? (indicating whether fencing has been done as well as paving)
-? Shape (indicating the shape of the area paved/fenced)
-? Dimensions (varying number of distances depending on the shape)
+Koustav Bhasin and Alessandra Grant
+Note: If a yard is fenced it is assumed that the entire perimeter, 
+overlapping the gate is also fenced. 
 */
 #include <iostream>
 #include <fstream>
 #include <cmath>
 #include <iomanip>
+#include <string>
+using namespace std;
 //perim tri A function that receives three side lengths of a triangle and returns the perimeter.
 float getTriPeri(float side1, float side2, float side3)
 { 
@@ -40,30 +35,26 @@ float getQuadArea(float side1, float side2, float diagonal, float side3, float s
 {
   float triArea1 = getTriArea(side1, side2, diagonal);
   float triArea2 = getTriArea(side3, side4, diagonal);
-  
-  //area / (0.5*base )
+  //area / (0.5*base ) is the height of a triangle
   float QuadArea = 0.5*diagonal*((triArea1/(0.5*side1))+(triArea2/(0.5*side3)));
 }
-float getTotalCost(float area, float peri, float fence) // finds total cost, area and perimeter are just starting variables, will declare in base code
+
+void printCost(float area, float peri, bool fence)
 {
-  float f_or_no;
-  float pave_cost = area * 19.50;
-  float fence_cost = peri * 27;
-  if (fence == 1) // whether fence is there or not, costs 150, shoudlve probably used boolean but I hate those
-    {
-      f_or_no = 150;
-        }
-  else
-    { 
-      f_or_no = 0;
-        }
-  float admin_cost = 45;
-  float sub_total = admin_cost + f_or_no + pave_cost + fence_cost;
+  //ceiiling area first
+  float pave_cost = ceil(area)*19.50;
+  //ceiling perim firs
+  float fence_cost = (ceil(peri)*27*fence)+(150*fence);
+  int admin_cost = 45;
+  float sub_total = admin_cost + pave_cost + fence_cost;
   float total_tax = sub_total*0.13;
   float grand_total = sub_total + total_tax;
+  /*prints the cost of everything but also actual fence length 
+  because of assignment requirement*/
+  cout<<setprecision(2)<<fixed<<setw(9)<<pave_cost<<setw(18)<<(peri*fence)<<setw(10)<<fence_cost;
+  cout<<setw(8)<<total_tax<<setw(10)<<grand_total<<endl;
+  return;
 }
-
-using namespace std;
 
 int main()
 {
@@ -73,29 +64,60 @@ int main()
   cout << "Unable to open file.\n";
   return EXIT_FAILURE;
 }
-int job_no = 1;
-int fence_y_n = 0;
+int job_no = 0;
+bool fence_y_n = 0;
 string q_or_tri = "";
- 
-while (FileIn){
+float area=0;
+float peri=0;
+float totalCost=0;
+float side1 = 0, side2 = 0, diagonal=0,side3 = 0, side4 = 0;
 
+cout<<" Job#"<<setw(6)<<"Fence";
+cout<<setw(16)<<"ActualPavedArea"<<setw(9)<<"PaveCost"<<setw(18);
+cout<<"ActualFenceLength"<<setw(10)<<"FenceCost";
+cout<<setw(7)<<"Taxes"<<setw(11)<<"TotalCost"<<endl;
+
+while (FileIn>>job_no){
  // loop it so it reads until there are no other jobs to complete
- FileIn >> job_no >> fence_y_n >> q_or_tri;
+ FileIn >> fence_y_n >> q_or_tri;
+ //if triangle
   if (q_or_tri == "tri")
     {
-      float side1 = 0, side2 = 0, side3 = 0;
 	  FileIn>>side1>>side2>>side3;
-      FileIn >> job_no >> fence_y_n >> q_or_tri >> side1 >> side2 >> side3;
-      getTriPeri(side1, side2, side3);
-      getTriArea(side1, side2, side3);
-      float area = getTriArea(side1, side2, side3);
-      float peri =  getTriPeri(side1, side2, side3);
-      float fence = fence_y_n;
-      getTotalCost(area, peri, fence);
+      area = getTriArea(side1, side2, side3);
+      peri = getTriPeri(side1, side2, side3);
     }
+  else if(q_or_tri == "quad")
+  {
+	  FileIn>>side1>>side2>>diagonal>>side3>>side4;
+      area = getQuadArea(side1, side2, diagonal,side3,side4);
+      peri = getQuadPeri(side1, side2, side3, side4);
+  }
+  else
+  {
+  	cout<<"Error reading file. No shape detected.";
+  }
+  //print in table
+   cout<<job_no<<setw(7)<<fence_y_n<<setw(16)<<area;
+   printCost(area, peri, fence_y_n);
+  
 }
         
   return EXIT_SUCCESS;
 }
+/* 
+Job#  Fence ActualPavedArea PaveCost ActualFenceLength FenceCost  Taxes  TotalCost
+7100      1         290.474  5674.50             90.00   2580.00 1078.94   9378.44
+7101      1           22.64   448.50             16.00    582.00  139.82   1215.31
+7102      0          884.00 17238.00              0.00      0.00 2246.79  19529.79
+7103      0           89.68  1755.00              0.00      0.00  234.00   2034.00
+7104      0         3191.05 62244.00              0.00      0.00 8097.57  70386.57
+7105      1          582.81 11368.50             81.20   2364.00 1791.07  15568.58
+7106      0           10.10   214.50              0.00      0.00   33.74    293.23
+7107      1            8.77   175.50             13.50    528.00   97.31    845.80
+7108      1          117.12  2301.00             36.40   1149.00  454.35   3949.35
 
-
+--------------------------------
+Process exited after 0.08778 seconds with return value 0
+Press any key to continue . . .
+*/
