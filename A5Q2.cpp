@@ -38,12 +38,15 @@ float getQuadPeri(float side1, float side2, float side3, float side4)
 //Gets Area of a Quadrilateral
 float getQuadArea(float side1, float side2, float diagonal, float side3, float side4) // must use getTriArea
 {
-  float triArea = getTriArea(side1, side2, side3);
-  float QuadArea;
+  float triArea1 = getTriArea(side1, side2, diagonal);
+  float triArea2 = getTriArea(side3, side4, diagonal);
+  
+  //area / (0.5*base )
+  float QuadArea = 0.5*diagonal*((triArea1/(0.5*side1))+(triArea2/(0.5*side3)));
 }
 float getTotalCost(float area, float peri, float fence) // finds total cost, area and perimeter are just starting variables, will declare in base code
 {
-	float f_or_no;
+  float f_or_no;
   float pave_cost = area * 19.50;
   float fence_cost = peri * 27;
   if (fence == 1) // whether fence is there or not, costs 150, shoudlve probably used boolean but I hate those
@@ -74,21 +77,23 @@ int job_no = 1;
 int fence_y_n = 0;
 string q_or_tri = "";
  
-while (find out how many jobs // loop it so it reads until there are no other jobs to complete
- FileIn >> job_no >> fence_y_n >> q_or_tri
+while (FileIn){
+
+ // loop it so it reads until there are no other jobs to complete
+ FileIn >> job_no >> fence_y_n >> q_or_tri;
   if (q_or_tri == "tri")
     {
-      int side1 = side2 = side3 = 0;
+      float side1 = 0, side2 = 0, side3 = 0;
+	  FileIn>>side1>>side2>>side3;
       FileIn >> job_no >> fence_y_n >> q_or_tri >> side1 >> side2 >> side3;
       getTriPeri(side1, side2, side3);
       getTriArea(side1, side2, side3);
-      area = getTriArea(side1, side2, side3);
-      peri =  getTriPeri(side1, side2, side3);
-      int fence = fence_y_n;
+      float area = getTriArea(side1, side2, side3);
+      float peri =  getTriPeri(side1, side2, side3);
+      float fence = fence_y_n;
       getTotalCost(area, peri, fence);
     }
-  else 
-    {
+}
         
   return EXIT_SUCCESS;
 }
