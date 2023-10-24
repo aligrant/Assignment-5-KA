@@ -1,96 +1,81 @@
 /*
- Insert Robot number and group member names here
+14
+Koustav Bhasin and Alessandra Grant
 */
-
 void configureAllSensors(); //configures all sensors to standard configuration
 void drive(int motor_power); //powers both drive motors with the same power
 void driveBoth (int motor_power_A, int motor_power_D); //powers both motors independently
 void waitButton(TEV3Buttons button_name);  // wait for push and release of specified button
 
 /*
-Replace this comment text with a description of the improvements made
-on the rotateRobot function and reasoning behind them.
+- slow down the motor power to reduce effect of momentum
+- decrease angle for the same reason
+- right now code uses abs of each angle so it always turns clockwise
 */
-void rotateRobot(int angle) //rotates robot in place to given angle then stops. Positive angles are clockwise when viewed from above
+void rotateRobot(int angle)
+//rotates robot in place to given angle then stops.
+//Positive angles are clockwise when viewed from above
 {
 	resetGyro(S4);
-
-	if (angle>0)
-	{
+	if (angle>0) {
 		driveBoth(-10,10);
-	}
-	else
-	{
+	} else {
 		driveBoth(10,-10);
 	}
-
 	while (abs(getGyroDegrees(S4))<abs(angle))
 	{}
-
 	drive(0);
 }
 
 
 /*
-Replace this comment text with a description of the improvements made
-on the driveDistance function and reasoning behind them.
+
 - slow down the motor power to reduce effect of momentum
+- decrease angle for the same reason
 - right now code uses abs of each angle so it always turns clockwise
 */
 
 //Drives robot straight for given distance based on motor encoders and
-//nominal wheel diameter. Positive distance is forwardvoid driveDistance(int distance).
-void driveDistance (int distance)
-{
-
+//nominal wheel diameter. Positive distance is
+//forward void driveDistance(int distance).
+void driveDistance (int distance) {
 	nMotorEncoder[motorA]=0;
 	const float CM_TO_DEG = 180/(2.75*PI);
-	if (distance>0)
-	{
+	if (distance>0) {
 		drive(50);
-	}
-	else
-	{
+	} else {
 		drive(-50);
 	}
-
 	while (abs(nMotorEncoder[motorA])<abs(distance*CM_TO_DEG)&&!getButtonPress(buttonEnter)&&SensorValue[S1]== 0)
 	{}
-int enc_limit= nMotorEncoder(motorA);
-if(SensorValue[S1]!=0){
-	ANGLE_CORNER*=-1;
-			rotateRobot(180);
-			wait1Msec(500);
-			while(nMotorEncoder(motorA) > enc_limit)
-			{
+	int enc_limit= nMotorEncoder(motorA);
+	if(SensorValue[S1]!=0) {
+		ANGLE_CORNER*=-1;
+		rotateRobot(180);
+		wait1Msec(500);
+		while(nMotorEncoder(motorA) > enc_limit) {
 			motor[motorA] = motor[motorD] = 10;
 		}
-}
-
+	}
 	drive(0);
-
 	wait1Msec(2000);
 }
 
 
 
-task main()
-{
+task main() {
 	/*const int NUM_SIDES = 4;*/
 	const int SIDE_LENGTH = 50;
 	int ANGLE_CORNER = 90;
 	//changed to int so can be modified
 	configureAllSensors();
 	waitButton(buttonEnter);
-int enc_limit=0;
-int a=2;
-while(a==2){
-	while(SensorValue[S1]== 0){
-		driveDistance(SIDE_LENGTH);
-		wait1Msec(500);
-		rotateRobot(ANGLE_CORNER);
-	}
-	}
+	int enc_limit=0;
+	driveDistance(SIDE_LENGTH);
+	wait1Msec(500);
+	rotateRobot(ANGLE_CORNER);
+	while(SensorValue[S1]== 0)
+	{}
 	wait1Msec(1000);
 	/*
 	while(){
@@ -103,8 +88,7 @@ while(a==2){
 /* ------------------------------------------------------------ */
 /* --- Do Not Modify the code below.                        --- */
 /* ------------------------------------------------------------ */
-void configureAllSensors()
-{
+void configureAllSensors() {
 	SensorType[S1] = sensorEV3_Touch;
 	SensorType[S2] = sensorEV3_Ultrasonic;
 	SensorType[S3] = sensorEV3_Color;
@@ -121,20 +105,17 @@ void configureAllSensors()
 }
 /* DNM: Do Not Modify the code below. */
 //powers both drive motors with the same power
-void drive(int motor_power)
-{
+void drive(int motor_power) {
 	motor[motorA] = motor[motorD] = motor_power;
 }
 /* DNM: Do Not Modify the code below. */
 //powers both motors independently
-void driveBoth(int motor_power_A, int motor_power_D)
-{
+void driveBoth(int motor_power_A, int motor_power_D) {
 	motor[motorA] = motor_power_A;
 	motor[motorD] = motor_power_D;
 }
 /* DNM: Do Not Modify the code below. */
-void waitButton(TEV3Buttons button_name)
-{
+void waitButton(TEV3Buttons button_name) {
 	while(!getButtonPress(button_name))
 	{}
 	while(getButtonPress(button_name))
