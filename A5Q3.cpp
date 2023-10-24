@@ -32,10 +32,79 @@ Write a program that:
 ? Outputs to the file the shortest time, in minutes, between rabbits
 ? Closes the files
 */
-  ifstream FileIn("wascally_wabbits.txt");
-  if (!FileIn)
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+int mins_2_mid(int time) // function to get time in minutes
 {
-  cout << "Unable to open file.\n";
-  return EXIT_FAILURE;
+	int hours = time/100;
+	int minutes = time % 100; // to get minutes from midnight
+	int minutes_midnight = (hours*6) + minutes;	
+	return minutes_midnight;
 }
 
+float getDistance (float x, float y)
+{
+	float distance = sqrt(pow(x,2) + pow(y,2)); // use pyathagoras theorem to find the distance from 0,0
+	return distance;
+}
+
+float getBearingAngle (float x, float y) // get angle bearing using arctan and convert to degrees
+{
+	float angleRad = atan(y/x);
+	if (angleRad > M_PI ) // ensure that the value is between -pi < x < pi, if it isnt then it adds or subtracts pi accordingly
+	{
+		angleRad = angleRad - M_PI;
+	}
+	if (angleRad < -M_PI)
+	{
+		angleRad = angleRad + M_PI;
+	}
+	else
+	{
+		angleRad = angleRad;
+	}
+	float angleDeg = (angleRad *180)/ M_PI;
+	return angleDeg;	
+}
+/*float shortestTime(int time, int time1) (still a work in progress)
+{
+	if (time > time1)
+	{
+		int temp; 
+		temp = time;
+		time = time1;
+		time1 = temp;
+	}
+}*/
+int main()
+
+{
+	ifstream fileIn ("wascally_wabbits.txt"); // check file open/close
+	ofstream fileOut ("output.txt");
+	
+	if (!fileIn || !fileOut)
+	{
+		cout << "Unable to open files\n";
+		return EXIT_FAILURE;
+	}
+	float time = 0.0;
+	float x_cord = 0.0;
+	float y_cord = 0.0;
+	file 
+	while (fileIn >> time >> x_cord >> y_cord) // loop to make sure the code runs to the end of the file
+	{
+		fileOut << mins_2_mid(time) << "  " <<getDistance(x_cord, y_cord) << "  "<< getBearingAngle(x_cord, y_cord) << "\n"; //file output
+		cout << mins_2_mid(time) << "  " <<getDistance(x_cord, y_cord) << "  "<< getBearingAngle(x_cord, y_cord) << "\n"; //output on code to see whether it works
+		
+	}
+	
+	fileIn.close();
+	fileOut.close(); // closing both output and input files
+	return EXIT_SUCCESS;
+}
